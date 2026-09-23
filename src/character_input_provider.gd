@@ -4,4 +4,4 @@ extends RefCounted
 
 
 @abstract
-func get_input() -> CharacterInput
+func get_input() -> CharacterInputData

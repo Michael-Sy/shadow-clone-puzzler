@@ -1,3 +1,4 @@
+class_name Player
 extends CharacterBody2D
 
 
@@ -30,18 +31,16 @@ var _jump_buffer_counter: float = 0.0
 
 var _max_speed_change: float = 0.0
 
-var _input_provider: CharacterInputProvider
+var _current_input: CharacterInputData = CharacterInputData.new()
 
 
 func _ready() -> void:
 	_jump_gravity = (2.0 * jump_height) / pow(time_to_jump_apex, 2)
 	_jump_velocity = -(2.0 * jump_height) / time_to_jump_apex
-	
-	_input_provider = Replayinput.new()
 
 
 func _physics_process(delta: float) -> void:
-	var input := _input_provider.get_input()
+	var input := _current_input
 	
 	if input.jump_pressed:
 		_desired_jump = true
@@ -102,3 +101,7 @@ func _physics_process(delta: float) -> void:
 	)
 	
 	move_and_slide()
+
+
+func set_input(input: CharacterInputData) -> void:
+	_current_input = input
