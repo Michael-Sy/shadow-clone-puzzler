@@ -1,17 +1,20 @@
 [gd_scene format=3 uid="uid://de7jceqiww5ol"]
 
-[ext_resource type="Texture2D" uid="uid://ct6q1r1gow62y" path="res://icon.svg" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://b2wylalc4wwei" path="res://src/player/player.gd" id="1_g2els"]
+[ext_resource type="Texture2D" uid="uid://cj5euwwygf7f8" path="res://assets/sprites/ascii_tileset.png" id="2_g2els"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_68yga"]
-size = Vector2(128, 128)
+[sub_resource type="AtlasTexture" id="AtlasTexture_68yga"]
+atlas = ExtResource("2_g2els")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_84upj"]
+size = Vector2(14, 14)
 
 [node name="Player" type="CharacterBody2D" unique_id=1845282722]
-scale = Vector2(0.2, 0.2)
 script = ExtResource("1_g2els")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2010436434]
-texture = ExtResource("1_3vyb7")
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=879834618]
+texture = SubResource("AtlasTexture_68yga")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1160663514]
-shape = SubResource("RectangleShape2D_68yga")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=309220355]
+shape = SubResource("RectangleShape2D_84upj")

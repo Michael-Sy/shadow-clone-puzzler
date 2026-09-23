@@ -9,3 +9,6 @@
 
 [node name="Player" parent="." unique_id=1845282722 instance=ExtResource("2_yqjtg")]
 position = Vector2(144, 56)
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1241975787]
+process_callback = 0
