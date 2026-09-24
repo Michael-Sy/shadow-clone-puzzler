@@ -26,5 +26,16 @@ func record_input(input: CharacterInputData) -> void:
 	recording.add_input(input)
 
 
+func record_spawn_event() -> void:
+	if not is_recording:
+		return
+	
+	recording.add_spawn_event()
+
+
 func get_recording() -> Recording:
 	return recording
+
+
+func clear_recording() -> void:
+	recording.clear()

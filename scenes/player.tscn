@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://de7jceqiww5ol"]
 
-[ext_resource type="Script" uid="uid://b2wylalc4wwei" path="res://src/player/player.gd" id="1_g2els"]
+[ext_resource type="Script" uid="uid://b2wylalc4wwei" path="res://src/character/character.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://cj5euwwygf7f8" path="res://assets/sprites/ascii_tileset.png" id="2_g2els"]
-[ext_resource type="Script" uid="uid://cspc7gukpgrk3" path="res://src/player_controller.gd" id="2_qhqgy"]
+[ext_resource type="Script" uid="uid://cspc7gukpgrk3" path="res://src/character/character_controller.gd" id="2_lrhn5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_68yga"]
 atlas = ExtResource("2_g2els")
@@ -12,14 +12,15 @@ region = Rect2(32, 0, 16, 16)
 size = Vector2(14, 14)
 
 [node name="Player" type="CharacterBody2D" unique_id=1845282722]
+collision_mask = 3
 script = ExtResource("1_g2els")
 
-[node name="PlayerController" type="Node" parent="." unique_id=669422861]
-script = ExtResource("2_qhqgy")
-metadata/_custom_type_script = "uid://cspc7gukpgrk3"
+[node name="CharacterController" type="Node" parent="." unique_id=669422861]
+script = ExtResource("2_lrhn5")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=879834618]
 texture = SubResource("AtlasTexture_68yga")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=309220355]
 shape = SubResource("RectangleShape2D_84upj")
+one_way_collision = true

@@ -1,9 +1,16 @@
 [gd_scene format=3 uid="uid://bmnh0h2gedl3n"]
 
 [ext_resource type="PackedScene" uid="uid://cl8eip1a01i11" path="res://scenes/test_level.tscn" id="1_uwrxv"]
+[ext_resource type="PackedScene" uid="uid://dbhkim2jagoxu" path="res://scenes/clone.tscn" id="2_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://de7jceqiww5ol" path="res://scenes/player.tscn" id="2_yqjtg"]
+[ext_resource type="Script" uid="uid://b5hot43q61l63" path="res://src/level_manager.gd" id="3_lnu2h"]
 
 [node name="Game" type="Node" unique_id=1694452316]
+
+[node name="LevelManager" type="Node" parent="." unique_id=532324488]
+script = ExtResource("3_lnu2h")
+clone_scene = ExtResource("2_lbhrr")
+metadata/_custom_type_script = "uid://b5hot43q61l63"
 
 [node name="Testlevel" parent="." unique_id=1264114084 instance=ExtResource("1_uwrxv")]
 

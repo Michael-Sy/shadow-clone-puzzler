@@ -4,10 +4,12 @@ extends CharacterInputProvider
 
 var recording: Recording
 var current_index: int = 0
+var spawn_events: Array[int] = []
 
 
 func _init(recording_in_play: Recording) -> void:
 	recording = recording_in_play
+	spawn_events = recording.spawn_events
 
 
 func get_input() -> CharacterInputData:
@@ -18,6 +20,14 @@ func get_input() -> CharacterInputData:
 	current_index += 1
 	
 	return input
+
+
+func has_spawn_event() -> bool:
+	return current_index in spawn_events
+
+
+func is_finished() -> bool:
+	return current_index >= recording.get_length()
 
 
 func reset() -> void:

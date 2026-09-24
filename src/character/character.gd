@@ -1,4 +1,4 @@
-class_name Player
+class_name Character
 extends CharacterBody2D
 
 
@@ -16,6 +16,10 @@ const JUMP_VELOCITY = -250.0
 @export var max_ground_deacceleration: float = 600.0
 @export var max_ground_turn_speed: float = 800.0
 
+@onready var player_controller: CharacterController = $CharacterController
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+
+var is_frozen: bool = false
 
 var _jump_gravity: float = 0.0
 var _jump_velocity: float = 0.0
@@ -40,6 +44,9 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if is_frozen:
+		return
+	
 	var input := _current_input
 	
 	if input.jump_pressed:
@@ -105,3 +112,20 @@ func _physics_process(delta: float) -> void:
 
 func set_input(input: CharacterInputData) -> void:
 	_current_input = input
+
+
+func freeze() -> void:
+	is_frozen = true
+	velocity = Vector2.ZERO
+
+
+func unfreeze() -> void:
+	is_frozen = false
+
+
+func enable_collision() -> void:
+	collision_shape_2d.disabled = false
+
+
+func disable_collision() -> void:
+	collision_shape_2d.disabled = true
