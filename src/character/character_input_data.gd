@@ -11,7 +11,7 @@ func duplicate() -> CharacterInputData:
 	var copy: CharacterInputData = CharacterInputData.new()
 	
 	copy.move_direction = move_direction
-	copy.jump_pressed = jump_held
+	copy.jump_pressed = jump_pressed
 	copy.jump_held = jump_held
 	
 	return copy

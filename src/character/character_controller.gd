@@ -3,8 +3,7 @@ extends Node
 
 
 signal action_performed
-signal spawn_event_reached(player: Character)
-signal replay_finished(player: Character)
+signal replay_finished(character: Character)
 
 var is_active: bool = true
 var is_recording: bool = false
@@ -12,42 +11,37 @@ var player: Character
 var input_provider: CharacterInputProvider
 var recording_manager: RecordingManager
 var recording_start_position: Vector2
+var recording_start_velocity: Vector2
 
 
 func _ready() -> void:
-	player = get_parent()
-	
+	player = get_parent() as Character
 	input_provider = HumanInput.new()
 	recording_manager = RecordingManager.new()
-	
-	player.set_input(input_provider.get_input())
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if not is_active:
 		return
 	
-	var input: CharacterInputData = input_provider.get_input()
+	for command in input_provider.get_ready_commands():
+		command.execute(self)
 	
-	if input_provider is ReplayInput:
-		if input_provider.has_spawn_event():
-			spawn_event_reached.emit(player)
-		
-		if input_provider.is_finished():
-			replay_finished.emit(player)
-	
-	player.set_input(input)
-	
-	if not is_recording:
-		if input.move_direction != 0.0 or input.jump_pressed or player.velocity.y != 0.0:
-			action_performed.emit()
+	var input := input_provider.get_input()
+	player.tick(input, delta)
 	
 	if is_recording:
 		recording_manager.record_input(input)
+	elif input.move_direction != 0.0 or input.jump_pressed or player.velocity.y != 0.0:
+		action_performed.emit()
+
+	if input_provider.is_finished():
+		replay_finished.emit(player)
 
 
 func start_recording() -> void:
 	recording_start_position = player.global_position
+	recording_start_velocity = player.velocity
 	input_provider = HumanInput.new()
 	recording_manager.start_recording()
 	is_recording = true
@@ -56,10 +50,6 @@ func start_recording() -> void:
 func stop_recording() -> void:
 	recording_manager.stop_recording()
 	is_recording = false
-
-
-func play_recording() -> void:
-	input_provider = ReplayInput.new(recording_manager.get_recording())
 
 
 func clear_recording() -> void:
@@ -86,3 +76,13 @@ func set_human_control() -> void:
 func set_replay(recording: Recording) -> void:
 	input_provider = ReplayInput.new(recording)
 	is_recording = false
+
+
+func begin_replay(start_position: Vector2, start_velocity: Vector2) -> void:
+	player.global_position = start_position
+	player.velocity = start_velocity
+	player.reset_state()
+	player.enable_collision()
+	player.visible = true
+	set_replay(get_recording())
+	activate()

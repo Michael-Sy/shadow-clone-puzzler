@@ -12,7 +12,7 @@ region = Rect2(32, 0, 16, 16)
 size = Vector2(14, 14)
 
 [node name="Player" type="CharacterBody2D" unique_id=1845282722]
-collision_mask = 3
+collision_layer = 0
 script = ExtResource("1_g2els")
 
 [node name="CharacterController" type="Node" parent="." unique_id=669422861]
@@ -23,4 +23,3 @@ texture = SubResource("AtlasTexture_68yga")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=309220355]
 shape = SubResource("RectangleShape2D_84upj")
-one_way_collision = true

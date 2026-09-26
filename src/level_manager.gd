@@ -9,19 +9,18 @@ var controlled_clone: Character
 var stored_clones: Array[Character] = []
 var clone_parents: Dictionary[Character, Character] = {}
 var clone_children: Dictionary[Character, Array] = {}
-var next_child_index: Dictionary = {}
 var clone_waiting_for_replay: bool = false
-var player_controller: CharacterController
 var has_replayed: bool = false
 
 @onready var player: Character = $"../Player"
 
 
 func _ready() -> void:
-	await player.ready
-	player_controller = player.player_controller
+	if not player.is_node_ready():
+		await player.ready
+	
+	var player_controller: CharacterController = player.controller
 	player_controller.action_performed.connect(_on_player_action)
-	player_controller.spawn_event_reached.connect(_on_spawn_event_reached)
 	player_controller.replay_finished.connect(_on_replay_finished)
 	controlled_character = player
 
@@ -44,16 +43,18 @@ func spawn_clone_from_controlled_character() -> void:
 	if controlled_character == player and has_replayed:
 		clean_previous_replays()
 	
-	controlled_character.player_controller.recording_manager.record_spawn_event()
-	
 	var new_clone: Character = clone_scene.instantiate()
 	add_child(new_clone)
-	
 	new_clone.global_position = controlled_character.global_position
 	new_clone.velocity = controlled_character.velocity
 	
-	var clone_controller: CharacterController = new_clone.player_controller
-	clone_controller.spawn_event_reached.connect(_on_spawn_event_reached)
+	var spawn_command := SpawnCloneCommand.new()
+	spawn_command.position = controlled_character.global_position
+	spawn_command.velocity = controlled_character.velocity
+	spawn_command.clone = new_clone
+	controlled_character.controller.recording_manager.record_command(spawn_command)
+	
+	var clone_controller: CharacterController = new_clone.controller
 	clone_controller.replay_finished.connect(_on_replay_finished)
 	clone_controller.start_recording()
 	
@@ -63,9 +64,7 @@ func spawn_clone_from_controlled_character() -> void:
 	
 	clone_children[controlled_character].append(new_clone)
 	
-	controlled_character.player_controller.deactivate()
-	controlled_character.set_input(CharacterInputData.new())
-	controlled_character.freeze()
+	controlled_character.controller.deactivate()
 	
 	controlled_clone = new_clone
 	controlled_character = new_clone
@@ -76,60 +75,66 @@ func stop_controlled_clone() -> void:
 	if controlled_clone == null:
 		return
 	
-	var clone_controller: CharacterController = controlled_clone.player_controller
+	var clone_controller: CharacterController = controlled_clone.controller
 	var previous_character: Character = clone_parents[controlled_clone]
 	
 	clone_controller.stop_recording()
 	clone_controller.deactivate()
 	
 	controlled_clone.visible = false
+	controlled_clone.disable_collision()
 	stored_clones.append(controlled_clone)
 	
 	controlled_clone = previous_character if previous_character != player else null
 	
 	previous_character.visible = true
-	previous_character.unfreeze()
-	previous_character.player_controller.activate()
+	previous_character.controller.activate()
 	
 	controlled_character = previous_character
 	
 	if previous_character == player:
-		previous_character.player_controller.set_human_control()
+		previous_character.controller.set_human_control()
 	
 	clone_waiting_for_replay = previous_character == player
 
 
 func replay_stored_clone() -> void:
-	next_child_index.clear()
 	has_replayed = true
 	
 	for clone in stored_clones:
-		var clone_controller: CharacterController = clone.player_controller
-		
 		if clone_parents[clone] != player:
 			continue
 		
-		clone.global_position = clone_controller.recording_start_position
-		clone.velocity = Vector2.ZERO
-		clone.enable_collision()
-		clone.visible = true
-		
-		clone_controller.set_replay(clone_controller.get_recording())
-		clone_controller.activate()
+		var clone_controller: CharacterController = clone.controller
+		clone_controller.begin_replay(
+			clone_controller.recording_start_position,
+			clone_controller.recording_start_velocity
+		)
 
 
 func reset_controlled_clone() -> void:
 	if controlled_clone == null:
 		return
-	
-	var clone_controller: CharacterController = controlled_clone.player_controller
-	
-	clone_children.erase(controlled_clone)
-	
+
+	var clone_controller: CharacterController = controlled_clone.controller
+	_free_descendants(controlled_clone)
+
 	controlled_clone.global_position = clone_controller.recording_start_position
-	controlled_clone.velocity = Vector2.ZERO
-	
+	controlled_clone.velocity = clone_controller.recording_start_velocity
+	controlled_clone.reset_state()
+
 	clone_controller.start_recording()
+
+
+func _free_descendants(character: Character) -> void:
+	if not clone_children.has(character):
+		return
+	for child: Character in clone_children[character]:
+		_free_descendants(child)
+		stored_clones.erase(child)
+		clone_parents.erase(child)
+		child.queue_free()
+	clone_children.erase(character)
 
 
 func clean_previous_replays() -> void:
@@ -139,7 +144,6 @@ func clean_previous_replays() -> void:
 	stored_clones.clear()
 	clone_parents.clear()
 	clone_children.clear()
-	next_child_index.clear()
 	has_replayed = false
 
 
@@ -151,34 +155,7 @@ func _on_player_action() -> void:
 	clone_waiting_for_replay = false
 
 
-func _on_spawn_event_reached(character: Character) -> void:
-	if not clone_children.has(character):
-		return
-	
-	if not next_child_index.has(character):
-		next_child_index[character] = 0
-	
-	var index: int = next_child_index[character]
-	var children: Array = clone_children[character]
-	
-	if index >= children.size():
-		return
-	
-	var clone: Character = children[index]
-	next_child_index[character] += 1
-	
-	var clone_controller: CharacterController = clone.player_controller
-	
-	clone.global_position = character.global_position
-	clone.velocity = Vector2.ZERO
-	clone.enable_collision()
-	clone.visible = true
-	
-	clone_controller.set_replay(clone_controller.get_recording())
-	clone_controller.activate()
-
-
 func _on_replay_finished(character: Character) -> void:
-	character.player_controller.deactivate()
+	character.controller.deactivate()
 	character.disable_collision()
 	character.visible = false

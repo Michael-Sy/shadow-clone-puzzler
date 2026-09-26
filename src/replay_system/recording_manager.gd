@@ -20,17 +20,17 @@ func stop_recording() -> void:
 
 
 func record_input(input: CharacterInputData) -> void:
-	if not recording:
+	if not is_recording:
 		return
-	
 	recording.add_input(input)
 
 
-func record_spawn_event() -> void:
+func record_command(command: Command) -> void:
 	if not is_recording:
 		return
 	
-	recording.add_spawn_event()
+	command.frame = recording.get_length()
+	recording.add_command(command)
 
 
 func get_recording() -> Recording:
