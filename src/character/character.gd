@@ -2,6 +2,7 @@ class_name Character
 extends CharacterBody2D
 
 
+const PLATFORM_LAYER: int = 2
 const SPEED = 125.0
 
 @export_category("Jump Settings")
@@ -15,7 +16,10 @@ const SPEED = 125.0
 @export var max_ground_deacceleration: float = 600.0
 @export var max_ground_turn_speed: float = 800.0
 
+var is_platform: bool = false
+
 @onready var controller: CharacterController = $CharacterController
+@onready var sprite: Sprite2D = $Sprite2D
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 
 var _jump_gravity: float = 0.0
@@ -30,6 +34,8 @@ var _coyote_time_counter: float = 0.0
 var _jump_buffer: float = 0.2
 var _jump_buffer_counter: float = 0.0
 
+var _platform_armed: bool = false
+
 
 func _ready() -> void:
 	_jump_gravity = (2.0 * jump_height) / pow(time_to_jump_apex, 2)
@@ -37,6 +43,15 @@ func _ready() -> void:
 
 
 func tick(input: CharacterInputData, delta: float) -> void:
+	if is_platform:
+		var wants_move: bool = input.move_direction != 0.0 or input.jump_pressed
+		if not wants_move:
+			_platform_armed = true
+			return
+		if not _platform_armed:
+			return
+		_exit_platform()
+	
 	if input.jump_pressed:
 		_desired_jump = true
 		_pressing_jump = true
@@ -104,6 +119,8 @@ func reset_state() -> void:
 	_pressing_jump = false
 	_coyote_time_counter = 0.0
 	_jump_buffer_counter = 0.0
+	if is_platform:
+		_exit_platform()
 
 
 func enable_collision() -> void:
@@ -112,3 +129,15 @@ func enable_collision() -> void:
 
 func disable_collision() -> void:
 	collision_shape_2d.disabled = true
+
+
+func become_platform() -> void:
+	is_platform = true
+	_platform_armed = false
+	velocity = Vector2.ZERO
+	set_collision_layer_value(PLATFORM_LAYER, true)
+
+
+func _exit_platform() -> void:
+	is_platform = false
+	set_collision_layer_value(PLATFORM_LAYER, false)

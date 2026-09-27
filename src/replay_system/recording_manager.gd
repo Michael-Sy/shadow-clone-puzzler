@@ -37,5 +37,5 @@ func get_recording() -> Recording:
 	return recording
 
 
-func clear_recording() -> void:
-	recording.clear()
+#func clear_recording() -> void:
+	#recording.clear()

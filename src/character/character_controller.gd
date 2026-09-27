@@ -2,7 +2,6 @@ class_name CharacterController
 extends Node
 
 
-signal action_performed
 signal replay_finished(character: Character)
 
 var is_active: bool = true
@@ -32,9 +31,7 @@ func _physics_process(delta: float) -> void:
 	
 	if is_recording:
 		recording_manager.record_input(input)
-	elif input.move_direction != 0.0 or input.jump_pressed or player.velocity.y != 0.0:
-		action_performed.emit()
-
+	
 	if input_provider.is_finished():
 		replay_finished.emit(player)
 
@@ -52,8 +49,8 @@ func stop_recording() -> void:
 	is_recording = false
 
 
-func clear_recording() -> void:
-	recording_manager.clear_recording()
+#func clear_recording() -> void:
+	#recording_manager.clear_recording()
 
 
 func get_recording() -> Recording:
@@ -68,9 +65,9 @@ func deactivate() -> void:
 	is_active = false
 
 
-func set_human_control() -> void:
-	input_provider = HumanInput.new()
-	is_recording = false
+#func set_human_control() -> void:
+	#input_provider = HumanInput.new()
+	#is_recording = false
 
 
 func set_replay(recording: Recording) -> void:
@@ -84,5 +81,6 @@ func begin_replay(start_position: Vector2, start_velocity: Vector2) -> void:
 	player.reset_state()
 	player.enable_collision()
 	player.visible = true
+	player.reset_physics_interpolation()
 	set_replay(get_recording())
 	activate()

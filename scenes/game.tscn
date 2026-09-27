@@ -7,15 +7,19 @@
 
 [node name="Game" type="Node" unique_id=1694452316]
 
+[node name="Player" parent="." unique_id=1845282722 instance=ExtResource("2_yqjtg")]
+position = Vector2(144, 56)
+
 [node name="LevelManager" type="Node" parent="." unique_id=532324488]
 script = ExtResource("3_lnu2h")
+clone_colors = Array[Color]([Color(0, 0.81960785, 1, 1), Color(1, 0.54901963, 0, 1), Color(1, 0.30588236, 0.6, 1), Color(0, 0.827451, 0, 1), Color(0.6509804, 0, 1, 1)])
 clone_scene = ExtResource("2_lbhrr")
+max_total_clones = 5
+max_clones_per_clone = 5
 metadata/_custom_type_script = "uid://b5hot43q61l63"
 
 [node name="Testlevel" parent="." unique_id=1264114084 instance=ExtResource("1_uwrxv")]
 
-[node name="Player" parent="." unique_id=1845282722 instance=ExtResource("2_yqjtg")]
-position = Vector2(144, 56)
-
-[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1241975787]
+[node name="Camera2D" type="Camera2D" parent="Testlevel" unique_id=1241975787]
+position = Vector2(168, 96)
 process_callback = 0
