@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dnis4ybguny77"]
+
+[ext_resource type="Script" uid="uid://dp80ymhdc6guv" path="res://src/chambers/structures/area_activator.gd" id="1_nckyt"]
+
+[node name="AreaActivator" type="Node2D" unique_id=440129522]
+script = ExtResource("1_nckyt")

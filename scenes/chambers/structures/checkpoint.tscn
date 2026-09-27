@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://ckackgitd0v3s"]
+
+[ext_resource type="Script" uid="uid://bs1pg4m2mlhg2" path="res://src/chambers/structures/checkpoint.gd" id="1_6s0uc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_68yga"]
+size = Vector2(16, 16)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_uup02"]
+load_path = "res://.godot/imported/ascii_tileset.png-3df9edecc89880207c5f033d69d26cad.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6s0uc"]
+atlas = SubResource("CompressedTexture2D_uup02")
+region = Rect2(16, 0, 16, 16)
+
+[node name="Checkpoint" type="Node2D" unique_id=2121897620]
+script = ExtResource("1_6s0uc")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1254565594]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=813677123]
+shape = SubResource("RectangleShape2D_68yga")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=99167802]
+texture = SubResource("AtlasTexture_6s0uc")

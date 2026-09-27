@@ -7,9 +7,27 @@
 atlas = ExtResource("2_rbuo6")
 region = Rect2(32, 0, 16, 16)
 
+[sub_resource type="Curve" id="Curve_68yga"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [node name="Clone" unique_id=1845282722 instance=ExtResource("1_ypstt")]
 process_mode = 1
-collision_mask = 3
+platform_saturation = 0.5
+platform_brightness = 1.0
 
 [node name="Sprite2D" parent="." index="1" unique_id=879834618]
 texture = SubResource("AtlasTexture_51lvd")
+
+[node name="PlatformParticles" type="CPUParticles2D" parent="." index="3" unique_id=1215814435]
+emitting = false
+amount = 16
+lifetime = 0.5
+local_coords = true
+emission_shape = 2
+emission_sphere_radius = 16.0
+gravity = Vector2(0, 0)
+radial_accel_min = -192.0
+radial_accel_max = -192.0
+scale_amount_max = 2.0
+scale_amount_curve = SubResource("Curve_68yga")

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Campaign" format=3 uid="uid://drqkrdcjdlldf"]
+
+[ext_resource type="Script" uid="uid://cstwht0ndh77p" path="res://src/chambers/chamber_data.gd" id="1_3bruu"]
+[ext_resource type="Script" uid="uid://cnwyygys6ef8c" path="res://src/replay_system/campaign.gd" id="2_ar544"]
+[ext_resource type="Resource" uid="uid://b08hx3uwo7u3n" path="res://assets/resources/chamber_one.tres" id="2_u71eq"]
+
+[resource]
+script = ExtResource("2_ar544")
+chambers = Array[ExtResource("1_3bruu")]([ExtResource("2_u71eq")])
+metadata/_custom_type_script = "uid://cnwyygys6ef8c"

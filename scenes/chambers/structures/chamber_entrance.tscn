@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://blgtedl6tdvnx"]
+
+[ext_resource type="Texture2D" uid="uid://cj5euwwygf7f8" path="res://assets/sprites/ascii_tileset.png" id="1_mo7yk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_68yga"]
+atlas = ExtResource("1_mo7yk")
+region = Rect2(240, 224, 16, 16)
+
+[node name="ChamberEntrance" type="Marker2D" unique_id=1347655411]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=261853307]
+self_modulate = Color(0.69411767, 0.69411767, 0.69411767, 1)
+texture = SubResource("AtlasTexture_68yga")

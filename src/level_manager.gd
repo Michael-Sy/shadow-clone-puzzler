@@ -2,13 +2,23 @@ class_name LevelManager
 extends Node
 
 
-@export var clone_colors: Array[Color] = []
-@export var clone_scene: PackedScene
-@export var max_total_clones: int = 3
-@export var allow_nested_clones: bool = true
-@export var max_clones_per_clone: int = 1
 @export var hard_reset_hold_time: float = 1.0
+@export var entrance: Marker2D
+@export_category("Clone Settings")
+@export var allow_become_platform: bool = false
+@export var max_total_clones: int = 1
+@export var allow_nested_clones: bool = false
+@export var max_clones_per_clone: int = 1
 
+
+var clone_scene: PackedScene = preload("res://scenes/clone.tscn")
+var clone_colors: Array[Color] = [
+	Color("00d1ff"), 
+	Color("ff8c00"), 
+	Color("ff4e99"), 
+	Color("00d300"), 
+	Color("a600ff")
+	]
 var player_start_position: Vector2
 var attempt_start_position: Vector2
 var attempt_start_velocity: Vector2
@@ -21,6 +31,7 @@ var clone_parents: Dictionary[Character, Character] = {}
 var clone_children: Dictionary[Character, Array] = {}
 var clone_waiting_for_replay: bool = false
 var has_replayed: bool = false
+var world_snapshots: Dictionary[Character, Dictionary] = {}
 
 @onready var player: Character = $"../Player"
 
@@ -30,6 +41,14 @@ func _ready() -> void:
 	
 	if not player.is_node_ready():
 		await player.ready
+	
+	if entrance != null:
+		player.global_position = entrance.global_position
+		player.velocity = Vector2.ZERO
+		player.reset_physics_interpolation()
+	else:
+		push_warning("LevelManager: no entrance set, using the player's placed position.")
+	
 	player_start_position = player.global_position
 	controlled_character = player
 
@@ -57,17 +76,20 @@ func _unhandled_input(event: InputEvent) -> void:
 		resume_world()
 		return
 	
-	if event.is_action_pressed("clear_recording"):
+	if event.is_action_pressed("reset_recording"):
 		reset_controlled_clone()
 	
-	if event.is_action_pressed("ui_up"):
+	if event.is_action_pressed("create_clone"):
 		spawn_clone_from_controlled_character()
 	
-	if event.is_action_pressed("ui_down"):
+	if event.is_action_pressed("stop_recording"):
 		stop_controlled_clone()
 	
 	if event.is_action_pressed("become_platform"):
 		make_controlled_clone_platform()
+	
+	if event.is_action_pressed("interact") and controlled_character != null:
+		controlled_character.controller.queue_command(InteractCommand.new())
 
 
 func spawn_clone_from_controlled_character() -> void:
@@ -86,9 +108,12 @@ func spawn_clone_from_controlled_character() -> void:
 	new_clone.velocity = controlled_character.velocity
 	new_clone.reset_physics_interpolation()
 	
+	world_snapshots[new_clone] = _save_world_state()
+	
 	var color_index := clone_parents.size()
+	new_clone.clone_number = color_index + 1
 	if color_index < clone_colors.size():
-		new_clone.sprite.self_modulate = clone_colors[color_index]
+		new_clone.set_base_color(clone_colors[color_index])
 	
 	var spawn_command := SpawnCloneCommand.new()
 	spawn_command.position = new_clone.global_position
@@ -118,6 +143,8 @@ func spawn_clone_from_controlled_character() -> void:
 func stop_controlled_clone() -> void:
 	if controlled_clone == null:
 		return
+	
+	_load_world_state(world_snapshots.get(controlled_clone, {}))
 	
 	var clone_controller: CharacterController = controlled_clone.controller
 	var previous_character: Character = clone_parents[controlled_clone]
@@ -162,6 +189,8 @@ func reset_controlled_clone() -> void:
 	if controlled_clone == null:
 		return
 	
+	_load_world_state(world_snapshots.get(controlled_clone, {}))
+	
 	var clone_controller: CharacterController = controlled_clone.controller
 	_free_descendants(controlled_clone)
 	
@@ -190,6 +219,7 @@ func clean_previous_replays() -> void:
 	stored_clones.clear()
 	clone_parents.clear()
 	clone_children.clear()
+	world_snapshots.clear()
 	has_replayed = false
 
 
@@ -216,6 +246,8 @@ func quick_reset() -> void:
 		_reset_player(attempt_start_position, attempt_start_velocity)
 	clone_waiting_for_replay = not stored_clones.is_empty()
 	pause_world()
+	get_tree().call_group("resettable", "reset")
+	print("start: ", player_start_position, "  attempt: ", attempt_start_position, "  stored: ", stored_clones.size())
 
 
 func hard_reset() -> void:
@@ -223,14 +255,16 @@ func hard_reset() -> void:
 	_reset_player(player_start_position, Vector2.ZERO)
 	clone_waiting_for_replay = false
 	pause_world()
+	get_tree().call_group("resettable", "reset")
+	GameManager.restart_chamber()
 
 
 func make_controlled_clone_platform() -> void:
-	if controlled_clone == null or controlled_clone.is_platform:
+	if controlled_clone == null or not allow_become_platform or controlled_clone.is_platform:
 		return
-	var command: Command = BecomePlatformCommand.new()
-	controlled_character.controller.recording_manager.record_command(command)
-	command.execute(controlled_clone.controller)
+	controlled_clone.controller.queue_command(BecomePlatformCommand.new())
+	#controlled_character.controller.recording_manager.record_command(command)
+	#command.execute(controlled_clone.controller)
 
 
 func _reset_player(position: Vector2, velocity: Vector2) -> void:
@@ -251,6 +285,7 @@ func _discard_in_progress_clones() -> void:
 		root = clone_parents[root]
 	_free_descendants(root)
 	clone_children[player].erase(root)
+	world_snapshots.erase(root)
 	clone_parents.erase(root)
 	root.queue_free()
 
@@ -268,6 +303,7 @@ func _free_descendants(character: Character) -> void:
 		_free_descendants(child)
 		stored_clones.erase(child)
 		clone_parents.erase(child)
+		world_snapshots.erase(child)
 		child.queue_free()
 	clone_children.erase(character)
 
@@ -275,6 +311,20 @@ func _free_descendants(character: Character) -> void:
 func _is_moving_event(event: InputEvent) -> bool:
 	return event.is_action_pressed("left") or event.is_action_pressed("right") \
 				or event.is_action_pressed("jump")
+
+
+func _save_world_state() -> Dictionary:
+	var snapshot := {}
+	for node in get_tree().get_nodes_in_group("resettable"):
+		if node.has_method("save_state"):
+			snapshot[node] = node.save_state()
+	return snapshot
+
+
+func _load_world_state(snapshot: Dictionary) -> void:
+	for node in snapshot:
+		if is_instance_valid(node):
+			node.load_state(snapshot[node])
 
 
 func _on_replay_finished(character: Character) -> void:

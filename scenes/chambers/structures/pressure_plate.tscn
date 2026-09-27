@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://hfhpdij3du17"]
+
+[ext_resource type="Script" uid="uid://dq62jp68u7u1s" path="res://src/chambers/structures/pressure_plate.gd" id="1_ct5vs"]
+[ext_resource type="Texture2D" uid="uid://cj5euwwygf7f8" path="res://assets/sprites/ascii_tileset.png" id="2_xtofl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_68yga"]
+size = Vector2(16, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_68yga"]
+atlas = ExtResource("2_xtofl")
+region = Rect2(240, 80, 16, 16)
+
+[node name="PressurePlate" type="Node2D" unique_id=1018441793]
+script = ExtResource("1_ct5vs")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1847564177]
+position = Vector2(0, -8)
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1446932905]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_68yga")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1276135152]
+position = Vector2(0, -8)
+texture = SubResource("AtlasTexture_68yga")

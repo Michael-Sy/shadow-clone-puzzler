@@ -16,8 +16,15 @@ const SPEED = 125.0
 @export var max_ground_deacceleration: float = 600.0
 @export var max_ground_turn_speed: float = 800.0
 
-var is_platform: bool = false
+@export_category("Platform Visuals")
+@export_range(0.0, 1.0) var platform_saturation: float = 0.2
+@export_range(0.0, 1.0) var platform_brightness: float = 0.55
 
+var clone_number: int = 0
+var is_platform: bool = false
+var base_color: Color = Color.WHITE
+
+@onready var platform_particles: CPUParticles2D = get_node_or_null("PlatformParticles")
 @onready var controller: CharacterController = $CharacterController
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
@@ -132,12 +139,37 @@ func disable_collision() -> void:
 
 
 func become_platform() -> void:
+	if is_platform:
+		return
 	is_platform = true
 	_platform_armed = false
 	velocity = Vector2.ZERO
 	set_collision_layer_value(PLATFORM_LAYER, true)
+	_update_platform_visuals()
+
+
+func set_base_color(color: Color) -> void:
+	base_color = color
+	_update_platform_visuals()
+
+
+func get_platform_color() -> Color:
+	return Color.from_hsv(
+		base_color.h,
+		base_color.s * platform_saturation,
+		base_color.v * platform_brightness,
+		base_color.a
+	)
+
+
+func _update_platform_visuals() -> void:
+	sprite.self_modulate = get_platform_color() if is_platform else base_color
+	if platform_particles != null:
+		platform_particles.color = get_platform_color()
+		platform_particles.emitting = is_platform
 
 
 func _exit_platform() -> void:
 	is_platform = false
 	set_collision_layer_value(PLATFORM_LAYER, false)
+	_update_platform_visuals()

@@ -1,9 +1,9 @@
-[gd_scene format=4 uid="uid://cl8eip1a01i11"]
+[gd_resource type="TileSet" format=3 uid="uid://w8gvlvvhign2"]
 
-[ext_resource type="Texture2D" uid="uid://cj5euwwygf7f8" path="res://assets/sprites/ascii_tileset.png" id="1_mfx43"]
+[ext_resource type="Texture2D" uid="uid://cj5euwwygf7f8" path="res://assets/sprites/ascii_tileset.png" id="1_5mwl8"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mfx43"]
-texture = ExtResource("1_mfx43")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oldks"]
+texture = ExtResource("1_5mwl8")
 1:0/0 = 0
 2:0/0 = 0
 3:0/0 = 0
@@ -182,7 +182,16 @@ texture = ExtResource("1_mfx43")
 1:11/0 = 0
 2:11/0 = 0
 3:11/0 = 0
+3:11/0/terrain_set = 0
+3:11/0/terrain = 0
+3:11/0/terrains_peering_bit/bottom_side = 0
+3:11/0/terrains_peering_bit/top_side = 0
 4:11/0 = 0
+4:11/0/terrain_set = 0
+4:11/0/terrain = 0
+4:11/0/terrains_peering_bit/bottom_side = 0
+4:11/0/terrains_peering_bit/left_side = 0
+4:11/0/terrains_peering_bit/top_side = 0
 5:11/0 = 0
 6:11/0 = 0
 7:11/0 = 0
@@ -194,12 +203,45 @@ texture = ExtResource("1_mfx43")
 13:11/0 = 0
 14:11/0 = 0
 15:11/0 = 0
+15:11/0/terrain_set = 0
+15:11/0/terrain = 0
+15:11/0/terrains_peering_bit/bottom_side = 0
+15:11/0/terrains_peering_bit/left_side = 0
 0:12/0 = 0
+0:12/0/terrain_set = 0
+0:12/0/terrain = 0
+0:12/0/terrains_peering_bit/right_side = 0
+0:12/0/terrains_peering_bit/top_side = 0
 1:12/0 = 0
+1:12/0/terrain_set = 0
+1:12/0/terrain = 0
+1:12/0/terrains_peering_bit/right_side = 0
+1:12/0/terrains_peering_bit/left_side = 0
+1:12/0/terrains_peering_bit/top_side = 0
 2:12/0 = 0
+2:12/0/terrain_set = 0
+2:12/0/terrain = 0
+2:12/0/terrains_peering_bit/right_side = 0
+2:12/0/terrains_peering_bit/bottom_side = 0
+2:12/0/terrains_peering_bit/left_side = 0
 3:12/0 = 0
+3:12/0/terrain_set = 0
+3:12/0/terrain = 0
+3:12/0/terrains_peering_bit/right_side = 0
+3:12/0/terrains_peering_bit/bottom_side = 0
+3:12/0/terrains_peering_bit/top_side = 0
 4:12/0 = 0
+4:12/0/terrain_set = 0
+4:12/0/terrain = 0
+4:12/0/terrains_peering_bit/right_side = 0
+4:12/0/terrains_peering_bit/left_side = 0
 5:12/0 = 0
+5:12/0/terrain_set = 0
+5:12/0/terrain = 0
+5:12/0/terrains_peering_bit/right_side = 0
+5:12/0/terrains_peering_bit/bottom_side = 0
+5:12/0/terrains_peering_bit/left_side = 0
+5:12/0/terrains_peering_bit/top_side = 0
 6:12/0 = 0
 7:12/0 = 0
 8:12/0 = 0
@@ -207,7 +249,6 @@ texture = ExtResource("1_mfx43")
 10:12/0 = 0
 11:12/0 = 0
 12:12/0 = 0
-13:12/next_alternative_id = 2
 13:12/0 = 0
 14:12/0 = 0
 15:12/0 = 0
@@ -221,13 +262,26 @@ texture = ExtResource("1_mfx43")
 7:13/0 = 0
 8:13/0 = 0
 9:13/0 = 0
+9:13/0/terrain_set = 0
+9:13/0/terrain = 0
+9:13/0/terrains_peering_bit/left_side = 0
+9:13/0/terrains_peering_bit/top_side = 0
 10:13/0 = 0
-11:13/next_alternative_id = 2
+10:13/0/terrain_set = 0
+10:13/0/terrain = 0
+10:13/0/terrains_peering_bit/right_side = 0
+10:13/0/terrains_peering_bit/bottom_side = 0
+11:13/next_alternative_id = 5
 11:13/0 = 0
-11:13/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+11:13/1 = 1
+11:13/1/modulate = Color(0.70796657, 0.70796645, 0.70796674, 1)
+11:13/1/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+11:13/2 = 2
+11:13/2/modulate = Color(0.34901962, 0.34901962, 0.34901962, 1)
+11:13/3 = 3
+11:13/3/modulate = Color(0.15127608, 0.15127608, 0.15127608, 1)
 12:13/0 = 0
 13:13/0 = 0
-14:13/next_alternative_id = 2
 14:13/0 = 0
 15:13/0 = 0
 0:14/0 = 0
@@ -263,12 +317,9 @@ texture = ExtResource("1_mfx43")
 14:15/0 = 0
 15:15/0 = 0
 
-[sub_resource type="TileSet" id="TileSet_84upj"]
+[resource]
 physics_layer_0/collision_layer = 1
-sources/0 = SubResource("TileSetAtlasSource_mfx43")
-
-[node name="Testlevel" type="Node2D" unique_id=1264114084]
-
-[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=2109876041]
-tile_map_data = PackedByteArray("AAATAAAAAAALAA0AAAAAAAoAAAALAA0AAAAAAAAAAAALAA0AAAABAAAAAAALAA0AAAACAAAAAAALAA0AAAADAAAAAAALAA0AAAAEAAAAAAALAA0AAAAFAAAAAAALAA0AAAAGAAAAAAALAA0AAAAHAAAAAAALAA0AAAAIAAAAAAALAA0AAAAJAAAAAAALAA0AAAAKAAAAAAALAA0AAAALAAAAAAALAA0AAAAMAAAAAAALAA0AAAANAAAAAAALAA0AAAAOAAAAAAALAA0AAAAPAAAAAAALAA0AAAAQAAAAAAALAA0AAAARAAAAAAALAA0AAAASAAAAAAALAA0AAAAAAAEAAAALAA0AAAAAAAIAAAALAA0AAAAAAAMAAAALAA0AAAAAAAQAAAALAA0AAAAAAAUAAAALAA0AAAAAAAYAAAALAA0AAAAAAAcAAAALAA0AAAAAAAgAAAALAA0AAAAAAAkAAAALAA0AAAAUAAAAAAALAA0AAAAUAAEAAAALAA0AAAAUAAIAAAALAA0AAAAUAAMAAAALAA0AAAAUAAQAAAALAA0AAAAUAAUAAAALAA0AAAAUAAYAAAALAA0AAAAUAAcAAAALAA0AAAAUAAgAAAALAA0AAAAUAAkAAAALAA0AAAAUAAoAAAALAA0AAAAUAAsAAAALAA0AAAATAAsAAAALAA0AAAASAAsAAAALAA0AAAARAAsAAAALAA0AAAAQAAsAAAALAA0AAAAPAAsAAAALAA0AAAAOAAsAAAALAA0AAAANAAsAAAALAA0AAAAMAAsAAAALAA0AAAALAAsAAAALAA0AAAAKAAsAAAALAA0AAAAJAAsAAAALAA0AAAAIAAsAAAALAA0AAAAHAAsAAAALAA0AAAAGAAsAAAALAA0AAAAFAAsAAAALAA0AAAAEAAsAAAALAA0AAAADAAsAAAALAA0AAAACAAsAAAALAA0AAAABAAsAAAALAA0AAAAAAAsAAAALAA0AAAAQAAgAAAALAA0AAAAPAAgAAAALAA0AAAANAAcAAAALAA0AAAAMAAcAAAALAA0AAAAJAAgAAAALAA0AAAAIAAgAAAALAA0AAAAFAAkAAAALAA0AAAAEAAkAAAALAA0AAAA=")
-tile_set = SubResource("TileSet_84upj")
+terrain_set_0/mode = 2
+terrain_set_0/terrain_0/name = "Wire"
+terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
+sources/0 = SubResource("TileSetAtlasSource_oldks")

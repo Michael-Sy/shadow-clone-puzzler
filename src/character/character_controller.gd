@@ -12,6 +12,8 @@ var recording_manager: RecordingManager
 var recording_start_position: Vector2
 var recording_start_velocity: Vector2
 
+var _queued_commands: Array[Command] = []
+
 
 func _ready() -> void:
 	player = get_parent() as Character
@@ -26,6 +28,11 @@ func _physics_process(delta: float) -> void:
 	for command in input_provider.get_ready_commands():
 		command.execute(self)
 	
+	for command in _queued_commands:
+		recording_manager.record_command(command)
+		command.execute(self)
+	_queued_commands.clear()
+	
 	var input := input_provider.get_input()
 	player.tick(input, delta)
 	
@@ -34,6 +41,10 @@ func _physics_process(delta: float) -> void:
 	
 	if input_provider.is_finished():
 		replay_finished.emit(player)
+
+
+func queue_command(command: Command) -> void:
+	_queued_commands.append(command)
 
 
 func start_recording() -> void:
@@ -49,10 +60,6 @@ func stop_recording() -> void:
 	is_recording = false
 
 
-#func clear_recording() -> void:
-	#recording_manager.clear_recording()
-
-
 func get_recording() -> Recording:
 	return recording_manager.get_recording()
 
@@ -63,11 +70,6 @@ func activate() -> void:
 
 func deactivate() -> void:
 	is_active = false
-
-
-#func set_human_control() -> void:
-	#input_provider = HumanInput.new()
-	#is_recording = false
 
 
 func set_replay(recording: Recording) -> void:
