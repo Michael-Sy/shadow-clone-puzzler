@@ -45,6 +45,7 @@ func load_state(state: Dictionary) -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body != level_manager.player:
 		return
+	print(true)
 	match mode:
 		Mode.TIMED:
 			_frames_left = roundi(active_seconds * Engine.physics_ticks_per_second)

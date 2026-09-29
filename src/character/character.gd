@@ -162,6 +162,50 @@ func get_platform_color() -> Color:
 	)
 
 
+func save_replay_state() -> Dictionary:
+	var provider := controller.input_provider
+	var state := {
+		"position": global_position,
+		"velocity": velocity,
+		"visible": visible,
+		"collision_disabled": collision_shape_2d.disabled,
+		"is_platform": is_platform,
+		"platform_armed": _platform_armed,
+		"desired_jump": _desired_jump,
+		"pressing_jump": _pressing_jump,
+		"coyote": _coyote_time_counter,
+		"jump_buffer": _jump_buffer_counter,
+		"provider": provider,
+	}
+	if provider is ReplayInput:
+		state["index"] = provider.current_index
+		state["command_index"] = provider.current_command_index
+	return state
+
+
+func load_replay_state(state: Dictionary) -> void:
+	if state["is_platform"] and not is_platform:
+		become_platform()
+	elif not state["is_platform"] and is_platform:
+		_exit_platform()
+	
+	global_position = state["position"]
+	velocity = state["velocity"]
+	visible = state["visible"]
+	collision_shape_2d.disabled = state["collision_disabled"]
+	_platform_armed = state["platform_armed"]
+	_desired_jump = state["desired_jump"]
+	_pressing_jump = state["pressing_jump"]
+	_coyote_time_counter = state["coyote"]
+	_jump_buffer_counter = state["jump_buffer"]
+	
+	controller.input_provider = state["provider"]
+	if state["provider"] is ReplayInput:
+		state["provider"].current_index = state["index"]
+		state["provider"].current_command_index = state["command_index"]
+	reset_physics_interpolation()
+
+
 func _update_platform_visuals() -> void:
 	sprite.self_modulate = get_platform_color() if is_platform else base_color
 	if platform_particles != null:

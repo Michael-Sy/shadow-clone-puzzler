@@ -10,14 +10,12 @@ size = Vector2(16, 16)
 atlas = ExtResource("2_6k1g2")
 region = Rect2(240, 224, 16, 16)
 
-[node name="ChamberExit" type="Node2D" unique_id=2126689197]
-
-[node name="ChamberExit" type="Area2D" parent="." unique_id=1718049676]
+[node name="ChamberExit" type="Area2D" unique_id=1718049676]
 collision_mask = 5
 script = ExtResource("1_t84lp")
 metadata/_custom_type_script = "uid://dmit60wik7vvr"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ChamberExit" unique_id=1736453927]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1736453927]
 shape = SubResource("RectangleShape2D_3pjdg")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1523237308]

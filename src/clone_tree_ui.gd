@@ -63,4 +63,6 @@ func _format(character: Character, label: String) -> String:
 	var result := "[color=#%s]%s[/color]" % [color.to_html(false), label]
 	if character.is_platform:
 		result += " ="
+	if character == level_manager.get_selected_clone() and level_manager.controlled_character == level_manager.player:
+		result += " *"
 	return result

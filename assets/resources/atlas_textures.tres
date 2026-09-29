@@ -1,7 +1,8 @@
 [gd_resource type="AtlasTexture" format=3 uid="uid://2wlc0vebh48a"]
 
-[ext_resource type="Texture2D" uid="uid://cj5euwwygf7f8" path="res://assets/sprites/ascii_tileset.png" id="1_i8gny"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_rxckb"]
+load_path = "res://.godot/imported/ascii_tileset.png-3df9edecc89880207c5f033d69d26cad.ctex"
 
 [resource]
-atlas = ExtResource("1_i8gny")
-region = Rect2(208, 192, 16, 16)
+atlas = SubResource("CompressedTexture2D_rxckb")
+region = Rect2(128, 32, 16, 16)

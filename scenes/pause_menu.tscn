@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://bmluclog5trlj"]
+
+[ext_resource type="Script" uid="uid://xrfbeotllf5j" path="res://src/pause_menu.gd" id="1_n87rw"]
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=930357762]
+layer = 10
+script = ExtResource("1_n87rw")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1490054367]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.23921569)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect" unique_id=1267428196]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResumeButton" type="Button" parent="ColorRect/VBoxContainer" unique_id=1363770218]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Resume"
+
+[node name="RestartButton" type="Button" parent="ColorRect/VBoxContainer" unique_id=561291181]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Restart Chamber"

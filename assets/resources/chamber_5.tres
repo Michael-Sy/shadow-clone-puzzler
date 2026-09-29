@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ChamberData" format=3 uid="uid://rkjarsw8wo5n"]
+
+[ext_resource type="Script" uid="uid://cstwht0ndh77p" path="res://src/chamber_data.gd" id="1_p7nxx"]
+
+[resource]
+script = ExtResource("1_p7nxx")
+chapter = 5
+scene_path = "uid://08wf33nttl3k"
+metadata/_custom_type_script = "uid://cstwht0ndh77p"

@@ -4,7 +4,7 @@ extends Node
 const SAVE_PATH := "user://progress.cfg"
 
 var campaign: Campaign = preload("res://assets/resources/campaign.tres")
-var current_index: int = -1
+var current_index: int = 0
 var highest_unlocked: int = 0
 
 var _is_changing_scene: bool = false

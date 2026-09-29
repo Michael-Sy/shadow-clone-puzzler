@@ -1,10 +1,14 @@
 [gd_resource type="Resource" script_class="Campaign" format=3 uid="uid://drqkrdcjdlldf"]
 
-[ext_resource type="Script" uid="uid://cstwht0ndh77p" path="res://src/chambers/chamber_data.gd" id="1_3bruu"]
-[ext_resource type="Script" uid="uid://cnwyygys6ef8c" path="res://src/replay_system/campaign.gd" id="2_ar544"]
-[ext_resource type="Resource" uid="uid://b08hx3uwo7u3n" path="res://assets/resources/chamber_one.tres" id="2_u71eq"]
+[ext_resource type="Script" uid="uid://cstwht0ndh77p" path="res://src/chamber_data.gd" id="1_rsg3o"]
+[ext_resource type="Resource" uid="uid://b08hx3uwo7u3n" path="res://assets/resources/chamber_1.tres" id="2_tphpy"]
+[ext_resource type="Resource" uid="uid://m7lom6wr7xi0" path="res://assets/resources/chamber_2.tres" id="3_rsg3o"]
+[ext_resource type="Resource" uid="uid://jhtuugc4dxog" path="res://assets/resources/chamber_3.tres" id="4_nxk22"]
+[ext_resource type="Resource" uid="uid://bs8ggv3g3epfc" path="res://assets/resources/chamber_4.tres" id="5_nxk22"]
+[ext_resource type="Script" uid="uid://cnwyygys6ef8c" path="res://src/campaign.gd" id="6_5w477"]
+[ext_resource type="Resource" uid="uid://rkjarsw8wo5n" path="res://assets/resources/chamber_5.tres" id="6_nxk22"]
 
 [resource]
-script = ExtResource("2_ar544")
-chambers = Array[ExtResource("1_3bruu")]([ExtResource("2_u71eq")])
+script = ExtResource("6_5w477")
+chambers = Array[ExtResource("1_rsg3o")]([ExtResource("2_tphpy"), ExtResource("3_rsg3o"), ExtResource("4_nxk22"), ExtResource("5_nxk22"), ExtResource("6_nxk22")])
 metadata/_custom_type_script = "uid://cnwyygys6ef8c"
